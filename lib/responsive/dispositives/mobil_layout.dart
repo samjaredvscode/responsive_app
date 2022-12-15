@@ -64,24 +64,20 @@ class CareCover extends StatelessWidget {
       ),
     ];
 
-    return AspectRatio(
-      aspectRatio: 4,
-      child: ListView.builder(
-        physics: const ScrollPhysics(parent: NeverScrollableScrollPhysics()),
-        itemCount: careCoverItems.length,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 50),
+    return Column(
+      children: [
+        for (var careCover in careCoverItems)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 55, vertical: 10),
             child: Row(
               children: [
-                careCoverItems[index].icon,
+                careCover.icon,
                 const SizedBox(width: 20),
-                Text(careCoverItems[index].leading),
+                Text(careCover.leading),
               ],
             ),
-          );
-        },
-      ),
+          )
+      ],
     );
   }
 }
