@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/models_for_list.dart';
 
-List<ModelListTema> temaList = [
+final List<ModelListTema> temaList = [
   ModelListTema(
     title: 'Inicio',
     icon: const Icon(Icons.adobe_rounded),
@@ -33,7 +33,7 @@ List<ModelListTema> temaList = [
   ),
 ];
 
-List<ModelsListCover> cardItems = [
+final List<ModelsListCover> cardItems = [
   ModelsListCover(
     id: 1,
     title: 'Most Popular',
@@ -58,4 +58,11 @@ List<ModelsListCover> cardItems = [
     leading: 'Better for you page and home',
     icon: const Icon(Icons.grade),
   ),
+];
+
+final List<PresentationAS> presentation = [
+  PresentationAS(
+    title: 'American System',
+    subtitle: 'Instituto de Educación Superior Tecnológico Privado I.E.S.T.P',
+  )
 ];
