@@ -39,3 +39,20 @@ class ModelListTema {
     };
   }
 }
+
+class PresentationAS {
+  final String title;
+  final String subtitle;
+
+  PresentationAS({
+    required this.title,
+    required this.subtitle,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'title': title,
+      'subtitle': subtitle,
+    };
+  }
+}
