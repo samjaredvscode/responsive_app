@@ -2,16 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:responsive_app/app/finals/items_title.dart';
 import 'package:responsive_app/app/utils/my_list_tiled_drawer.dart';
 
-class TabletLayout extends StatefulWidget {
+import '../../app/utils/button_get_started.dart';
+import '../../app/utils/drawer_header_as.dart';
+
+class TabletLayout extends StatelessWidget {
   const TabletLayout({super.key});
 
-  @override
-  State<TabletLayout> createState() => _TabletLayoutState();
-}
-
-int currentIndex = 0;
-
-class _TabletLayoutState extends State<TabletLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +15,22 @@ class _TabletLayoutState extends State<TabletLayout> {
       appBar: AppBar(
         title: const Icon(Icons.adobe),
       ),
-      drawer: Drawer(
+      drawer: const MyDrawerTablet(),
+      body: const MainContentTablet(),
+    );
+  }
+}
+
+class MyDrawerTablet extends StatelessWidget {
+  const MyDrawerTablet({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 10),
         child: ListView(
           children: [
             const DrawerHeaderAS(),
@@ -32,7 +43,6 @@ class _TabletLayoutState extends State<TabletLayout> {
           ],
         ),
       ),
-      body: const MainContentTablet(),
     );
   }
 }
@@ -51,7 +61,7 @@ class MainContentTablet extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(32),
             child: SizedBox(
-              height: 300,
+              height: 320,
               width: double.infinity,
               child: Stack(
                 fit: StackFit.expand,
@@ -63,42 +73,24 @@ class MainContentTablet extends StatelessWidget {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text(
-                        'American System',
-                        style: TextStyle(
+                      Text(
+                        presentation.first.title,
+                        style: const TextStyle(
                           fontSize: 54,
                           fontWeight: FontWeight.w600,
                         ),
                       ),
-                      const Text(
-                        'Instituto de Educación Superior Tecnológico Privado I.E.S.T.P',
-                        style: TextStyle(
-                          fontSize: 22,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
                       Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 20,
-                        ),
-                        child: TextButton(
-                          onPressed: () {},
-                          style: TextButton.styleFrom(
-                            foregroundColor:
-                                Theme.of(context).colorScheme.background,
-                            backgroundColor:
-                                Theme.of(context).colorScheme.primary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50),
-                            ),
-                            minimumSize: const Size(190, 80),
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(
+                          presentation.first.subtitle,
+                          style: const TextStyle(
+                            fontSize: 22,
                           ),
-                          child: const Text(
-                            'Empezar',
-                            style: TextStyle(fontSize: 22),
-                          ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
+                      const ButtonGetStarted(),
                     ],
                   ),
                 ],
@@ -107,40 +99,6 @@ class MainContentTablet extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class DrawerHeaderAS extends StatelessWidget {
-  const DrawerHeaderAS({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onInverseSurface,
-            borderRadius: BorderRadius.circular(22),
-          ),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(
-              vertical: 80,
-              horizontal: 10,
-            ),
-            child: Text(
-              'American System',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

@@ -1,59 +1,61 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_app/app/finals/items_title.dart';
 
-class DesktopLayout extends StatefulWidget {
+import '../../app/utils/button_get_started.dart';
+
+class DesktopLayout extends StatelessWidget {
   const DesktopLayout({super.key});
 
   @override
-  State<DesktopLayout> createState() => _DesktopLayoutState();
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      bottomNavigationBar: NavigatinRailWidget(),
+    );
+  }
+}
+
+class NavigatinRailWidget extends StatefulWidget {
+  const NavigatinRailWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<NavigatinRailWidget> createState() => _NavigatinRailWidgetState();
 }
 
 int currentIndex = 0;
 
-class _DesktopLayoutState extends State<DesktopLayout> {
+class _NavigatinRailWidgetState extends State<NavigatinRailWidget> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          NavigationRailTheme(
-            data: const NavigationRailThemeData(
-              labelType: NavigationRailLabelType.all,
-            ),
-            child: ClipRRect(
-              child: Expanded(
-                child: ListView(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    NavigationRail(
-                      backgroundColor:
-                          Theme.of(context).colorScheme.onInverseSurface,
-                      minWidth: 100,
-                      destinations: [
-                        for (var itemsLista in temaList)
-                          NavigationRailDestination(
-                            icon: itemsLista.icon,
-                            label: Text(itemsLista.title),
-                          ),
-                      ],
-                      useIndicator: true,
-                      selectedIndex: currentIndex,
-                      onDestinationSelected: (value) {
-                        setState(() {
-                          currentIndex = value;
-                        });
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        NavigationRailTheme(
+          data: const NavigationRailThemeData(
+            labelType: NavigationRailLabelType.all,
           ),
-          const MainContent()
-        ],
-      ),
+          child: NavigationRail(
+            backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
+            minWidth: 100,
+            destinations: [
+              for (var itemsLista in temaList)
+                NavigationRailDestination(
+                  icon: itemsLista.icon,
+                  label: Text(itemsLista.title),
+                ),
+            ],
+            useIndicator: true,
+            selectedIndex: currentIndex,
+            onDestinationSelected: (value) {
+              setState(() {
+                currentIndex = value;
+              });
+            },
+          ),
+        ),
+        const MainContent()
+      ],
     );
   }
 }
@@ -67,14 +69,14 @@ class MainContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(10),
         child: ListView(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(35),
               child: SizedBox(
                 width: double.infinity,
-                height: 400,
+                height: 420,
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
@@ -85,6 +87,13 @@ class MainContent extends StatelessWidget {
                     const PresentationOne()
                   ],
                 ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              'Bienvenidos a nuestro sitio Web.',
+              style: TextStyle(
+                fontSize: 54,
               ),
             ),
           ],
@@ -105,52 +114,25 @@ class PresentationOne extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'American System',
+          presentation.first.title,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onBackground,
             fontWeight: FontWeight.w600,
             fontSize: 64,
           ),
         ),
-        Text(
-          'Instituto de Educación Superior Tecnológico Privado I.E.S.T.P',
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onBackground,
-            fontSize: 22,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Text(
+            presentation.first.subtitle,
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onBackground,
+              fontSize: 22,
+            ),
           ),
         ),
         const ButtonGetStarted()
       ],
-    );
-  }
-}
-
-class ButtonGetStarted extends StatelessWidget {
-  const ButtonGetStarted({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 20,
-      ),
-      child: TextButton(
-        onPressed: () {},
-        style: TextButton.styleFrom(
-          foregroundColor: Theme.of(context).colorScheme.background,
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-          ),
-          minimumSize: const Size(220, 90),
-        ),
-        child: const Text(
-          'Empezar',
-          style: TextStyle(fontSize: 26),
-        ),
-      ),
     );
   }
 }
