@@ -15,14 +15,15 @@ class MyListTiledDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 14),
       child: ListTile(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 5),
         selectedColor: Theme.of(context).colorScheme.onSurface,
         selected: true,
         leading: leading,
         title: title,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(18),
         ),
         onTap: onTap,
       ),
