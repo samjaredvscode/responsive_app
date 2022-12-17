@@ -22,3 +22,20 @@ class ModelsListCover {
     };
   }
 }
+
+class ModelListTema {
+  final String title;
+  final Icon icon;
+
+  ModelListTema({
+    required this.title,
+    required this.icon,
+  });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'tite': title,
+      'icon': icon,
+    };
+  }
+}
