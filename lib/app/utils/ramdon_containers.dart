@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 
 class RamdonContainers extends StatelessWidget {
-  const RamdonContainers(
-      {super.key,
-      required this.index,
-      this.width = 100,
-      this.height = 100,
-      this.color = Colors.blue,
-      this.colorText,
-      this.borderRadius,
-      this.padding});
+  const RamdonContainers({
+    super.key,
+    required this.index,
+    this.width = 100,
+    this.height = 100,
+    this.color = Colors.blue,
+    this.colorText,
+    this.borderRadius,
+    this.padding,
+  });
 
   final int index;
   final double width;
