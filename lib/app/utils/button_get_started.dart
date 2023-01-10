@@ -4,9 +4,11 @@ class ButtonGetStarted extends StatelessWidget {
   const ButtonGetStarted({
     super.key,
     this.minimunSize,
+    this.onPressed,
   });
 
   final Size? minimunSize;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class ButtonGetStarted extends StatelessWidget {
         vertical: 20,
       ),
       child: TextButton(
-        onPressed: () {},
+        onPressed: onPressed ?? () {},
         style: TextButton.styleFrom(
           foregroundColor: Theme.of(context).colorScheme.background,
           backgroundColor: Theme.of(context).colorScheme.primary,
