@@ -42,6 +42,14 @@ class _NavigatinRailWidgetState extends State<NavigatinRailWidget> {
                 icon: Icon(itemOnList.first.icon),
                 label: Text(itemOnList.first.title),
               ),
+              NavigationRailDestination(
+                icon: Icon(itemOnList.first.icon),
+                label: Text(itemOnList.first.title),
+              ),
+              NavigationRailDestination(
+                icon: Icon(itemOnList.first.icon),
+                label: Text(itemOnList.first.title),
+              ),
             ],
             useIndicator: true,
             selectedIndex: currentIndex,
