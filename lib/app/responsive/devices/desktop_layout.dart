@@ -38,18 +38,11 @@ class _NavigatinRailWidgetState extends State<NavigatinRailWidget> {
             backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
             minWidth: 100,
             destinations: [
-              NavigationRailDestination(
-                icon: Icon(itemOnList.first.icon),
-                label: Text(itemOnList.first.title),
-              ),
-              NavigationRailDestination(
-                icon: Icon(itemOnList.first.icon),
-                label: Text(itemOnList.first.title),
-              ),
-              NavigationRailDestination(
-                icon: Icon(itemOnList.first.icon),
-                label: Text(itemOnList.first.title),
-              ),
+              for (var items in itemOnList)
+                NavigationRailDestination(
+                  icon: Icon(items.icon),
+                  label: Text(items.title),
+                ),
             ],
             useIndicator: true,
             selectedIndex: currentIndex,
@@ -60,14 +53,14 @@ class _NavigatinRailWidgetState extends State<NavigatinRailWidget> {
             },
           ),
         ),
-        const MainContent()
+        const MainContentDesktop()
       ],
     );
   }
 }
 
-class MainContent extends StatelessWidget {
-  const MainContent({
+class MainContentDesktop extends StatelessWidget {
+  const MainContentDesktop({
     Key? key,
   }) : super(key: key);
 
@@ -79,7 +72,7 @@ class MainContent extends StatelessWidget {
         child: ListView(
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(35),
+              borderRadius: BorderRadius.circular(30),
               child: SizedBox(
                 width: double.infinity,
                 height: 420,
@@ -87,7 +80,7 @@ class MainContent extends StatelessWidget {
                   fit: StackFit.expand,
                   children: [
                     Image.asset(
-                      'assets/images/material-3-desing-light.jpg',
+                      'assets/images/material-3-desing-dark.jpg',
                       fit: BoxFit.cover,
                     ),
                     const PresentationOne()
@@ -118,18 +111,19 @@ class PresentationOne extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          presentation.first.title,
+          presentation.first.title.toUpperCase(),
           style: TextStyle(
             color: Theme.of(context).colorScheme.onBackground,
             fontWeight: FontWeight.w600,
-            fontSize: 64,
+            fontSize: 86,
           ),
         ),
         Text(
           presentation.first.subtitle,
           style: TextStyle(
             color: Theme.of(context).colorScheme.onBackground,
-            fontSize: 22,
+            fontSize: 28,
+            fontWeight: FontWeight.w400,
           ),
         ),
         const ButtonGetStarted()
