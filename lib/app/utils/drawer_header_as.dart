@@ -31,7 +31,7 @@ class DrawerHeaderAS extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  vertical: 80,
+                  vertical: 40,
                   horizontal: 10,
                 ),
                 child: Text(
