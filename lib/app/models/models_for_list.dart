@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 class ModelListTema {
   final String title;
   final IconData icon;
-  final List? subtitle;
+  final List<String> subtitle;
 
   ModelListTema({
     required this.title,
     required this.icon,
-    this.subtitle,
+    required this.subtitle,
   });
 
   Map<String, dynamic> toJson() {
