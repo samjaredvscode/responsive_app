@@ -1,9 +1,20 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:responsive_app/app/finals/items_title.dart';
+import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
+import 'package:responsive_app/app/finals/constantes.dart';
+import 'package:responsive_app/app/models/models_for_list.dart';
+import 'package:responsive_app/app/ui/about_view.dart';
+import 'package:responsive_app/app/ui/events_view.dart';
+import 'package:responsive_app/app/ui/extension_view.dart';
+import 'package:responsive_app/app/ui/information_view.dart';
+import 'package:responsive_app/app/ui/intranet_view.dart';
+import 'package:responsive_app/app/ui/racing_view.dart';
+import 'package:responsive_app/app/utils/button_get_started.dart';
 
-import '../../utils/button_get_started.dart';
-import '../../utils/drawer_header_as.dart';
+import '../../finals/items_title.dart';
+import '../../utils/system_overlay_custom.dart';
 
 class MobileLayout extends StatelessWidget {
   const MobileLayout({super.key});
@@ -11,29 +22,217 @@ class MobileLayout extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
-          systemNavigationBarColor: Theme.of(context).colorScheme.background),
+      value: SystemOverlayCustom.overlay(context),
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
-        appBar: AppBar(
-          title: const Icon(Icons.adobe_rounded),
-        ),
-        drawer: const MyDrawerMobile(),
-        body: const MainContentMobil(),
+        body: const CustomDrawer(),
       ),
     );
   }
 }
 
-class MainContentMobil extends StatelessWidget {
-  const MainContentMobil({
+class CustomDrawer extends StatelessWidget {
+  const CustomDrawer({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
+    return SimpleHiddenDrawer(
+      contentCornerRadius: 30,
+      verticalScalePercent: 90,
+      slidePercent: kSlidePercent,
+      curveAnimation: Curves.fastOutSlowIn,
+      initPositionSelected: 0,
+      menu: const MenuMobil(),
+      screenSelectedBuilder: (position, controller) {
+        Widget? screenCurrent;
+        switch (position) {
+          case 0:
+            screenCurrent = const MainContentMobil();
+            break;
+          case 1:
+            screenCurrent = const EventsView();
+            break;
+          case 2:
+            screenCurrent = const RacingView();
+            break;
+          case 3:
+            screenCurrent = const ExtensionView();
+            break;
+          case 4:
+            screenCurrent = const InformationView();
+            break;
+          case 5:
+            screenCurrent = const IntranetView();
+            break;
+          case 6:
+            screenCurrent = const AboutView();
+            break;
+        }
+        return Scaffold(
+          backgroundColor: Theme.of(context).colorScheme.background,
+          appBar: AppBar(
+            title: const Icon(Icons.adobe_rounded),
+            leading: IconButton(
+              onPressed: () {
+                controller.toggle();
+              },
+              icon: const Icon(
+                Icons.menu_rounded,
+                size: 30,
+              ),
+            ),
+          ),
+          body: screenCurrent,
+        );
+      },
+    );
+  }
+}
+
+// class BuildAppBarTitle extends StatelessWidget {
+//   const BuildAppBarTitle({
+//     super.key,
+//     required this.position,
+//   });
+
+//   final int position;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     late String currentText;
+//     switch (position) {
+//       case 0:
+//         currentText = 'Inicio';
+//         break;
+//       case 1:
+//         currentText = 'Eventos';
+//         break;
+//       case 2:
+//         currentText = 'Carreras';
+//         break;
+//       case 3:
+//         currentText = 'Extención';
+//         break;
+//       case 4:
+//         currentText = 'Información';
+//         break;
+//       case 5:
+//         currentText = 'Intranet';
+//         break;
+//       case 6:
+//         currentText = 'Nosotros';
+//         break;
+//     }
+//     return Text(currentText);
+//   }
+// }
+
+class MenuMobil extends StatefulWidget {
+  const MenuMobil({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  State<MenuMobil> createState() => _MenuMobilState();
+}
+
+class _MenuMobilState extends State<MenuMobil> with TickerProviderStateMixin {
+  late SimpleHiddenDrawerController controller;
+
+  @override
+  void didChangeDependencies() {
+    controller = SimpleHiddenDrawerController.of(context);
+    super.didChangeDependencies();
+  }
+
+  ModelListTema currentItems = itemOnList.first;
+
+  @override
+  Widget build(BuildContext context) {
+    final query = MediaQuery.of(context).size;
+    log('$query');
+    return Container(
+      constraints: BoxConstraints.expand(
+        height: double.maxFinite,
+        width: query.width / 1.1 - kSlidePercent,
+      ),
+      child: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              for (var items in itemOnList)
+                BuildLisTiled(
+                  items: items,
+                  controller: controller,
+                  currentItem: currentItems.title,
+                  valueChanged: (value) {
+                    setState(() {
+                      currentItems = value;
+                    });
+                  },
+                )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class BuildLisTiled extends StatelessWidget {
+  const BuildLisTiled({
+    Key? key,
+    required this.items,
+    required this.controller,
+    required this.currentItem,
+    required this.valueChanged,
+  }) : super(key: key);
+
+  final ModelListTema items;
+  final SimpleHiddenDrawerController controller;
+  final String currentItem;
+  final ValueChanged<ModelListTema> valueChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    if (items.subtitle.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+        child: ListTile(
+          title: Text(items.title),
+          leading: Icon(items.icon),
+          trailing: Icon(
+            items.subtitle.isNotEmpty ? Icons.arrow_forward_ios_rounded : null,
+          ),
+          onTap: () {
+            controller.setSelectedMenuPosition(items.id);
+            valueChanged(items);
+          },
+          selectedTileColor: Theme.of(context).colorScheme.primaryContainer,
+          hoverColor: Theme.of(context).colorScheme.onPrimary,
+          selectedColor: Theme.of(context).colorScheme.onBackground,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+          selected: currentItem == items.title,
+        ),
+      );
+    }
+    return const ListTile();
+  }
+}
+
+class MainContentMobil extends StatelessWidget {
+  const MainContentMobil({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.background,
+      body: ListView(
         children: [
           Padding(
             padding: const EdgeInsets.all(10),
@@ -84,56 +283,6 @@ class MainContentMobil extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class MyDrawerMobile extends StatelessWidget {
-  const MyDrawerMobile({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      width: 300,
-      child: Padding(
-        padding: const EdgeInsets.only(bottom: 10, top: 35),
-        child: Column(
-          children: [
-            const DrawerHeaderAS(),
-            Expanded(
-              child: ListView.builder(
-                itemCount: itemOnList.length,
-                itemBuilder: (context, index) {
-                  final result = itemOnList[index].subtitle;
-                  if (result.isEmpty) {
-                    return ListTile(
-                      title: Text(itemOnList[index].title),
-                      leading: Icon(itemOnList[index].icon),
-                      iconColor: Colors.white60,
-                      onTap: () {},
-                    );
-                  }
-                  return ExpansionTile(
-                    title: Text(itemOnList[index].title),
-                    leading: Icon(itemOnList[index].icon),
-                    children: [
-                      for (var item in result)
-                        ListTile(
-                          contentPadding: const EdgeInsets.only(left: 30),
-                          title: Text(item),
-                          leading: const Icon(Icons.adjust_rounded),
-                          onTap: () {},
-                        )
-                    ],
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
