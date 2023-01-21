@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_app/app/finals/items_title.dart';
 
-class DrawerHeaderAS extends StatelessWidget {
-  const DrawerHeaderAS({super.key});
+class DrawerHeaderContent extends StatelessWidget {
+  const DrawerHeaderContent({super.key});
 
   @override
   Widget build(BuildContext context) {
