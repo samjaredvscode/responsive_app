@@ -1,21 +1,33 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class ModelListTema {
+  final int id;
   final String title;
   final IconData icon;
   final List<String> subtitle;
+  final Widget screens;
 
   ModelListTema({
+    required this.id,
     required this.title,
     required this.icon,
     required this.subtitle,
+    required this.screens,
   });
 
-  Map<String, dynamic> toJson() {
-    return {
-      'tite': title,
-      'icon': icon,
-    };
+  ModelListTema copyWith({
+    String? title,
+    IconData? icon,
+    List<String>? subtitle,
+    Widget? screens,
+  }) {
+    return ModelListTema(
+      id: id,
+      title: title ?? this.title,
+      icon: icon ?? this.icon,
+      subtitle: subtitle ?? this.subtitle,
+      screens: screens ?? this.screens,
+    );
   }
 }
 
