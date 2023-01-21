@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ThemeCustom {
-  static final lighTheme = ThemeData(
+  static final darkTheme = ThemeData(
     fontFamily: 'Poppins',
     useMaterial3: true,
     colorScheme: const ColorScheme(
