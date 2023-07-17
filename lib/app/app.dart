@@ -1,22 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:responsive_app/app/responsive/devices/bloc/tab_bloc.dart';
 import 'package:responsive_app/app/responsive/devices/desktop_layout.dart';
 import 'package:responsive_app/app/responsive/devices/mobil_layout.dart';
 import 'package:responsive_app/app/responsive/devices/tablet_layout.dart';
 import 'package:responsive_app/app/responsive/responsive_layout.dart';
 import 'package:responsive_app/app/routes/app_routes.dart';
-import 'package:responsive_app/app/themes/themes_custom.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeCustom.darkTheme,
-      routerConfig: CustomRouter.router,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => TabBloc(),
+        ),
+      ],
+      child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          fontFamily: 'Poppins',
+          useMaterial3: true,
+          colorSchemeSeed: Colors.blue,
+          brightness: Brightness.light,
+        ),
+        routerConfig: CustomRouter.router,
+      ),
     );
   }
 }

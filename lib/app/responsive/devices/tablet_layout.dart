@@ -1,183 +1,77 @@
-import 'dart:developer';
+import 'dart:collection';
 
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
-import 'package:hidden_drawer_menu/hidden_drawer_menu.dart';
-import 'package:responsive_app/app/finals/constantes.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:responsive_app/app/finals/items_title.dart';
-import 'package:responsive_app/app/models/models_for_list.dart';
-import 'package:responsive_app/app/ui/about_view.dart';
-import 'package:responsive_app/app/ui/events_view.dart';
-import 'package:responsive_app/app/ui/extension_view.dart';
-import 'package:responsive_app/app/ui/information_view.dart';
-import 'package:responsive_app/app/ui/intranet_view.dart';
-import 'package:responsive_app/app/ui/racing_view.dart';
+import 'package:responsive_app/app/routes/list_pages.dart';
+import 'package:responsive_app/app/utils/header_drawer.dart';
+import 'package:responsive_app/app/utils/navigation_drawer_custom.dart';
 
 import '../../utils/button_get_started.dart';
+import 'bloc/tab_bloc.dart';
 
 class TabletLayout extends StatelessWidget {
   const TabletLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final screens = context.select<TabBloc, int>((value) => value.state.index);
+    final updateMap = HashMap<int, Widget>.from({
+      ...ListPage.currentPages,
+      0: const MainContentTablet(),
+    });
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: const CustomDrawer(),
-    );
-  }
-}
-
-class CustomDrawer extends StatelessWidget {
-  const CustomDrawer({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SimpleHiddenDrawer(
-      contentCornerRadius: 30,
-      verticalScalePercent: 90,
-      slidePercent: kSlidePercent / 2,
-      curveAnimation: Curves.fastOutSlowIn,
-      initPositionSelected: 0,
-      menu: const MenuTablet(),
-      screenSelectedBuilder: (position, controller) {
-        Widget? screenCurrent;
-        switch (position) {
-          case 0:
-            screenCurrent = const MainContentTablet();
-            break;
-          case 1:
-            screenCurrent = const EventsView();
-            break;
-          case 2:
-            screenCurrent = const RacingView();
-            break;
-          case 3:
-            screenCurrent = const ExtensionView();
-            break;
-          case 4:
-            screenCurrent = const InformationView();
-            break;
-          case 5:
-            screenCurrent = const IntranetView();
-            break;
-          case 6:
-            screenCurrent = const AboutView();
-            break;
-        }
-        return Scaffold(
-          appBar: AppBar(
-            title: const Icon(Icons.adobe_rounded),
-            leading: IconButton(
-              onPressed: () {
-                controller.toggle();
-              },
-              icon: const Icon(
-                Icons.menu_rounded,
-                size: 30,
-              ),
-            ),
-          ),
-          body: screenCurrent,
-        );
-      },
-    );
-  }
-}
-
-class MenuTablet extends StatefulWidget {
-  const MenuTablet({super.key});
-
-  @override
-  State<MenuTablet> createState() => _MenuTabletState();
-}
-
-class _MenuTabletState extends State<MenuTablet> {
-  late SimpleHiddenDrawerController controller;
-
-  @override
-  void didChangeDependencies() {
-    controller = SimpleHiddenDrawerController.of(context);
-    super.didChangeDependencies();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final query = MediaQuery.of(context).size;
-    log('$query');
-    log('${query.height / query.width}');
-    return Container(
-      constraints: BoxConstraints.expand(
-        height: double.infinity,
-        width: query.width / 2.2 - kSlidePercent,
+      appBar: AppBar(
+        title: const Text('T A B L E T'),
       ),
-      child: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              for (var items in itemOnList)
-                BuildLisTiled(
-                  items: items,
-                  controller: controller,
-                ),
-            ],
-          ),
-        ),
+      drawer: const MyDrawerTablet(),
+      body: PageTransitionSwitcher(
+        duration: const Duration(milliseconds: 300),
+        transitionBuilder: (child, primaryAnimation, secondaryAnimation) {
+          return FadeThroughTransition(
+            animation: primaryAnimation,
+            secondaryAnimation: secondaryAnimation,
+            child: child,
+          );
+        },
+        child: updateMap[screens],
       ),
     );
   }
 }
 
-class BuildLisTiled extends StatelessWidget {
-  const BuildLisTiled({
+class MyDrawerTablet extends StatelessWidget {
+  const MyDrawerTablet({
     super.key,
-    required this.items,
-    required this.controller,
   });
 
-  final ModelListTema items;
-  final SimpleHiddenDrawerController controller;
-
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    if (items.subtitle.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-        child: ListTile(
-          title: Text(items.title),
-          leading: Icon(items.icon),
-          hoverColor: colorScheme.inversePrimary,
-          selectedColor: colorScheme.onBackground,
-          selectedTileColor: colorScheme.primaryContainer,
-          minLeadingWidth: 10,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          onTap: () {
-            controller.setSelectedMenuPosition(items.id);
+    return BlocBuilder<TabBloc, TabState>(
+      builder: (context, state) {
+        return NavigationDrawerCustom(
+          selectedIndex: state.index,
+          onDestinationSelected: (value) {
+            context
+                .read<TabBloc>()
+                .add(TabEvent.currentIndex(currentIndex: value));
+            context.pop();
           },
-        ),
-      );
-    }
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-      child: ListTile(
-        title: Text(items.title),
-        leading: Icon(items.icon),
-        minLeadingWidth: 10,
-        trailing: const Icon(Icons.arrow_forward_rounded),
-        hoverColor: colorScheme.inversePrimary,
-        selectedColor: colorScheme.onBackground,
-        selectedTileColor: colorScheme.primaryContainer,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
-        onTap: () {
-          controller.setSelectedMenuPosition(items.id);
-        },
-      ),
+          children: [
+            const HeaderDrawer(),
+            ...itemOnList.map(
+              (items) => NavigationDrawerDestinationCustom(
+                icon: Icon(items.icon),
+                label: Text(items.title),
+              ),
+            )
+          ],
+        );
+      },
     );
   }
 }

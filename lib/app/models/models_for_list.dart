@@ -39,11 +39,14 @@ class PresentationAS {
     required this.title,
     required this.subtitle,
   });
+}
 
-  Map<String, dynamic> toJson() {
-    return {
-      'title': title,
-      'subtitle': subtitle,
-    };
-  }
+class MenuItem {
+  final String title;
+  final IconData icon;
+
+  const MenuItem({
+    required this.title,
+    required this.icon,
+  });
 }

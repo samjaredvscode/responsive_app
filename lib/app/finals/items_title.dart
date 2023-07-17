@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:responsive_app/app/ui/about_view.dart';
-import 'package:responsive_app/app/ui/events_view.dart';
-import 'package:responsive_app/app/ui/extension_view.dart';
-import 'package:responsive_app/app/ui/information_view.dart';
-import 'package:responsive_app/app/ui/intranet_view.dart';
-import 'package:responsive_app/app/ui/kick-off_view.dart';
-import 'package:responsive_app/app/ui/racing_view.dart';
+import 'package:responsive_app/app/ui/pages/about_view.dart';
+import 'package:responsive_app/app/ui/pages/events_view.dart';
+import 'package:responsive_app/app/ui/pages/extension_view.dart';
+import 'package:responsive_app/app/ui/pages/information_view.dart';
+import 'package:responsive_app/app/ui/pages/kick-off_view.dart';
+import 'package:responsive_app/app/ui/pages/racing_view.dart';
 
 import '../models/models_for_list.dart';
 
@@ -61,17 +60,6 @@ final itemOnList = [
     screens: const InformationView(),
   ),
   ModelListTema(
-    id: 5,
-    title: 'Intranet',
-    icon: Icons.group_work_rounded,
-    subtitle: [
-      'Alumnos',
-      'Administrativo',
-      'Docentes',
-    ],
-    screens: const IntranetView(),
-  ),
-  ModelListTema(
     id: 6,
     title: 'Nosotros',
     icon: Icons.info_rounded,
@@ -86,3 +74,29 @@ final presentation = [
     subtitle: 'Instituto de Educación Superior Tecnológico Privado I.E.S.T.P',
   )
 ];
+
+class MenuItems {
+  static const List<MenuItem> itemsFirst = [
+    itemAlumnos,
+    itemAdministrativo,
+    itemsDocente
+  ];
+  static const List<MenuItem> itemsSeconds = [itemSettings];
+
+  static const itemAlumnos = MenuItem(
+    title: 'Alumno',
+    icon: Icons.face_rounded,
+  );
+  static const itemsDocente = MenuItem(
+    title: 'Docente',
+    icon: Icons.person_rounded,
+  );
+  static const itemAdministrativo = MenuItem(
+    title: 'Administrativo',
+    icon: Icons.admin_panel_settings_rounded,
+  );
+  static const itemSettings = MenuItem(
+    title: 'Ajustes',
+    icon: Icons.settings,
+  );
+}

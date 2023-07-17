@@ -15,22 +15,17 @@ class ButtonGetStarted extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 20,
+        horizontal: 40,
       ),
-      child: TextButton(
-        onPressed: onPressed ?? () {},
-        style: TextButton.styleFrom(
-          foregroundColor: Theme.of(context).colorScheme.background,
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(50),
-          ),
-          minimumSize: minimunSize ?? const Size(220, 90),
+      child: FilledButton(
+        onPressed: () {},
+        style: FilledButton.styleFrom(
+          fixedSize: const Size(250, 80),
         ),
         child: const Text(
           'Empezar',
           style: TextStyle(
             fontSize: 26,
-            fontWeight: FontWeight.w400,
           ),
         ),
       ),

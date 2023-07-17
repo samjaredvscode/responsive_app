@@ -1,30 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_app/app/finals/items_title.dart';
+import 'package:responsive_app/app/routes/list_pages.dart';
 import 'package:responsive_app/app/utils/button_get_started.dart';
+
+import 'bloc/tab_bloc.dart';
 
 class DesktopLayout extends StatelessWidget {
   const DesktopLayout({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      bottomNavigationBar: NavigatinRailWidget(),
+    final screens = context.select<TabBloc, int>((value) => value.state.index);
+    Map<int, Widget> updateMap = {
+      ...ListPage.currentPages,
+      0: const MainContentDesktop(),
+    };
+    return Scaffold(
+      bottomNavigationBar: NavigatinRailWidget(
+        screens: updateMap[screens],
+      ),
     );
   }
 }
 
-class NavigatinRailWidget extends StatefulWidget {
+class NavigatinRailWidget extends StatelessWidget {
   const NavigatinRailWidget({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+    this.screens,
+  });
 
-  @override
-  State<NavigatinRailWidget> createState() => _NavigatinRailWidgetState();
-}
+  final Widget? screens;
 
-int currentIndex = 0;
-
-class _NavigatinRailWidgetState extends State<NavigatinRailWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -34,35 +41,38 @@ class _NavigatinRailWidgetState extends State<NavigatinRailWidget> {
           data: const NavigationRailThemeData(
             labelType: NavigationRailLabelType.all,
           ),
-          child: NavigationRail(
-            backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
-            minWidth: 100,
-            destinations: [
-              for (var items in itemOnList)
-                NavigationRailDestination(
-                  icon: Icon(items.icon),
-                  label: Text(items.title),
-                ),
-            ],
-            useIndicator: true,
-            selectedIndex: currentIndex,
-            onDestinationSelected: (value) {
-              setState(() {
-                currentIndex = value;
-              });
+          child: BlocBuilder<TabBloc, TabState>(
+            builder: (context, state) {
+              return NavigationRail(
+                backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
+                minWidth: 100,
+                destinations: [
+                  ...itemOnList.map(
+                    (items) => NavigationRailDestination(
+                      icon: Icon(items.icon),
+                      label: Text(items.title),
+                    ),
+                  )
+                ],
+                useIndicator: true,
+                selectedIndex: state.index,
+                onDestinationSelected: (value) {
+                  context
+                      .read<TabBloc>()
+                      .add(TabEvent.currentIndex(currentIndex: value));
+                },
+              );
             },
           ),
         ),
-        const MainContentDesktop()
+        screens!
       ],
     );
   }
 }
 
 class MainContentDesktop extends StatelessWidget {
-  const MainContentDesktop({
-    Key? key,
-  }) : super(key: key);
+  const MainContentDesktop({super.key});
 
   @override
   Widget build(BuildContext context) {
