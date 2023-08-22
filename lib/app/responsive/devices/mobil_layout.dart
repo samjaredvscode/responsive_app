@@ -204,13 +204,13 @@ class MainContentMobil extends StatelessWidget {
           const AboutCrearsWidget(
             title: 'Administración de Empresas',
             subTitle:
-                'El proceso de administración de una red de los fallos y el rendimiento utilizando diversas herramientas y tecnologías.',
+                'La administración de empresas es una rama de las ciencias sociales que tiene como objetivo principal tomar los recursos de forma estratégica para lograr los objetivos.',
             assetImage: 'assets/images/administrador-estadistica.jpg',
           ),
           const AboutCrearsWidget(
             title: 'Secretariado Ejecutivo',
             subTitle:
-                'El proceso de administración de una red de los fallos y el rendimiento utilizando diversas herramientas y tecnologías.',
+                'El secretariado ejecutivo es un puesto de trabajo o profesión que sirve para brindar el máximo apoyo a los empleados de alto rango en una empresa u organización.',
             assetImage: 'assets/images/secretarido-ejecutivo.jpg',
           ),
         ],
@@ -268,12 +268,14 @@ class AboutCrearsWidget extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(10),
               child: Text.rich(
+                maxLines: 4,
+                overflow: TextOverflow.ellipsis,
                 TextSpan(
                   children: [
                     TextSpan(
                       text: '$title\n',
                       style: TextStyle(
-                        fontSize: textSize.titleMedium!.fontSize,
+                        fontSize: textSize.titleMedium?.fontSize,
                         fontWeight: FontWeight.w700,
                       ),
                     ),

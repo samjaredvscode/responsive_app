@@ -7,6 +7,8 @@ import 'package:responsive_app/app/responsive/devices/tablet_layout.dart';
 import 'package:responsive_app/app/responsive/responsive_layout.dart';
 import 'package:responsive_app/app/routes/app_routes.dart';
 
+import 'themes/themes.dart';
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
@@ -25,12 +27,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp.router(
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          fontFamily: 'Poppins',
-          useMaterial3: true,
-          colorSchemeSeed: Colors.blue,
-          brightness: Brightness.light,
-        ),
+        theme: AppTheme().getTheme(),
         routerConfig: CustomRouter.router,
       ),
     );

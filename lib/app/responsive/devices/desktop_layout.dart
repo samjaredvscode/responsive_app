@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:responsive_app/app/finals/items_title.dart';
-import 'package:responsive_app/app/routes/list_pages.dart';
 import 'package:responsive_app/app/utils/button_get_started.dart';
 
 import 'bloc/tab_bloc.dart';
@@ -11,26 +10,56 @@ class DesktopLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screens = context.select<TabBloc, int>((value) => value.state.index);
-    Map<int, Widget> updateMap = {
-      ...ListPage.currentPages,
-      0: const MainContentDesktop(),
-    };
+    // final Brightness theme = MediaQuery.of(context).platformBrightness;
+    // final screens = context.select<TabBloc, int>((value) => value.state.index);
+    // Map<int, Widget> updateMap = {
+    //   ...ListPage.currentPages,
+    //   0: const MainContentDesktop(),
+    // };
     return Scaffold(
-      bottomNavigationBar: NavigatinRailWidget(
-        screens: updateMap[screens],
+      appBar: AppBar(
+        elevation: 10,
+        title: const Row(
+          children: [
+            Text('I.E.S.T.P American System'),
+          ],
+        ),
+        actions: [
+          ...itemOnList.map(
+            (items) => TextButton(
+              onPressed: () {},
+              child: Text(items.title),
+            ),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.nightlight_round_outlined),
+          )
+        ],
       ),
+      // bottomNavigationBar: NavigatinRailWidget(
+      //   screens: updateMap[screens] ?? const Text('No Screens'),
+      // ),
     );
+  }
+}
+
+class IconTheme extends StatelessWidget {
+  const IconTheme({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
 
 class NavigatinRailWidget extends StatelessWidget {
   const NavigatinRailWidget({
     super.key,
-    this.screens,
+    required this.screens,
   });
 
-  final Widget? screens;
+  final Widget screens;
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +94,7 @@ class NavigatinRailWidget extends StatelessWidget {
             },
           ),
         ),
-        screens!
+        screens
       ],
     );
   }
